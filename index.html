@@ -3,211 +3,545 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pan’s Pets Paradise | Exotic Fish in Kathmandu</title>
+    <meta name="description" content="Pan’s Pets Paradise - Nepal’s premium aquarium store in Aatma Gyan, Samakhushi Rd, Kathmandu. Exotic freshwater fish, Flowerhorn, Arowana, Cichlids, Bettas &amp; planted tanks. Fast delivery across Nepal.">
+    <meta name="keywords" content="aquarium Nepal, exotic fish Kathmandu, Flowerhorn Nepal, Arowana Nepal, aquarium store Samakhushi, Pan’s Pets Paradise">
+    <title>Pan’s Pets Paradise | Exotic Fish Paradise in Kathmandu</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;family=Playfair+Display:wght@700&amp;display=swap');
+        
+        :root {
+            --teal: #0f766e;
+            --coral: #ff6b6b;
+            --blue: #00d4ff;
+            --green: #22c55e;
+        }
+        
+        * { transition-property: color, background-color, border-color, text-decoration-color, fill, stroke; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+        
         .heading-font { font-family: 'Playfair Display', sans-serif; }
-        .fish-card { transition: all 0.4s ease; }
-        .fish-card:hover { transform: translateY(-12px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+        .fish-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .fish-card:hover { transform: translateY(-12px); box-shadow: 25px 25px 30px -10px rgb(15 118 110 / 0.15); }
+        
+        .hero-bg {
+            background: linear-gradient(90deg, #0f766e 0%, #022c28 100%);
+        }
+        
+        .cart-drawer { animation: slideIn 0.4s ease forwards; }
+        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
     </style>
 </head>
-<body class="bg-gray-50 font-sans">
+<body class="tailwind-ready">
 
     <!-- NAVBAR -->
-    <nav class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <span class="text-4xl">🐟</span>
+    <nav class="bg-white border-b sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+            <div class="flex items-center gap-x-3">
+                <div class="w-11 h-11 bg-[#0f766e] rounded-3xl flex items-center justify-center text-white text-3xl">🐟</div>
                 <div>
-                    <h1 class="heading-font text-3xl text-teal-800">Pan’s Pets</h1>
-                    <p class="text-xs tracking-widest text-blue-500">PETS PARADISE</p>
+                    <h1 class="heading-font text-3xl font-bold text-[#0f766e]">Pan’s Pets</h1>
+                    <p class="text-sm text-[#00d4ff] -mt-1 tracking-widest">PETS PARADISE</p>
                 </div>
             </div>
-            <div class="hidden md:flex gap-8 font-medium">
-                <a href="#shop" class="hover:text-teal-600">Shop Fish</a>
-                <a href="#about" class="hover:text-teal-600">About Us</a>
-                <a href="#contact" class="hover:text-teal-600">Visit Us</a>
+
+            <div class="hidden md:flex items-center gap-x-9 text-base font-medium">
+                <a onclick="navigateTo('home')" class="hover:text-[#0f766e]">Home</a>
+                <a onclick="navigateTo('shop')" class="hover:text-[#0f766e]">Shop Fish</a>
+                <a onclick="navigateTo('about')" class="hover:text-[#0f766e]">Our Story</a>
+                <a onclick="navigateTo('contact')" class="hover:text-[#0f766e]">Visit Us</a>
             </div>
-            <button onclick="toggleCart()" class="flex items-center gap-2">
-                <i class="fa-solid fa-bag-shopping text-2xl"></i>
-                <span id="cart-count" class="bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">0</span>
-            </button>
+
+            <div class="flex items-center gap-x-5">
+                <button onclick="toggleCart()" class="relative flex items-center gap-x-2 text-[#0f766e]">
+                    <i class="fa-solid fa-bag-shopping text-3xl"></i>
+                    <span id="cart-count-badge" class="absolute -top-1 -right-1 bg-[#ff6b6b] text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">0</span>
+                </button>
+
+                <a href="https://wa.me/9779808695590" target="_blank" class="bg-[#22c55e] text-white px-6 py-3 rounded-3xl flex items-center gap-x-2 hover:bg-[#16a34a]">
+                    <i class="fa-brands fa-whatsapp text-2xl"></i>
+                    <span class="hidden sm:block">WhatsApp</span>
+                </a>
+
+                <button onclick="toggleMobileMenu()" class="md:hidden text-3xl text-[#0f766e]">
+                    <i id="mobile-icon" class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t px-6 py-4">
+            <a onclick="navigateTo('home');toggleMobileMenu()" class="block py-3">🏠 Home</a>
+            <a onclick="navigateTo('shop');toggleMobileMenu()" class="block py-3">🛒 Shop All Fish</a>
+            <a onclick="navigateTo('about');toggleMobileMenu()" class="block py-3">📖 Our Story</a>
+            <a onclick="navigateTo('contact');toggleMobileMenu()" class="block py-3">📍 Visit Store</a>
         </div>
     </nav>
 
     <!-- HERO -->
-    <section class="bg-gradient-to-br from-teal-900 via-blue-900 to-teal-950 text-white py-24 relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6 text-center relative z-10">
-            <h1 class="heading-font text-6xl md:text-7xl leading-tight mb-6">
-                Exotic Fish Paradise<br>in Kathmandu
-            </h1>
-            <p class="text-2xl text-blue-300 mb-8">Aatma Gyan, Samakhusi Rd</p>
-            <button onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})" 
-                    class="bg-white text-teal-900 font-bold text-xl px-12 py-5 rounded-full hover:scale-105 transition">
-                SHOP EXOTIC FISH →
-            </button>
-        </div>
-    </section>
+    <section id="home" class="hero-bg text-white">
+        <div class="max-w-7xl mx-auto px-6 pt-20 pb-16 md:pt-28 md:pb-20">
+            <div class="grid md:grid-cols-12 gap-12 items-center">
+                <div class="md:col-span-7">
+                    <div class="inline-flex items-center gap-x-2 bg-white/20 backdrop-blur-md px-6 h-9 rounded-3xl text-sm font-medium mb-6">
+                        <div class="w-2 h-2 bg-[#22c55e] rounded-full animate-pulse"></div>
+                        FRESH IMPORTS • SAME-DAY KATHMANDU DELIVERY
+                    </div>
+                    <h1 class="heading-font text-6xl md:text-7xl leading-none font-bold mb-4">Exotic Fish<br>Delivered in Nepal</h1>
+                    <p class="text-[#00d4ff] text-3xl mb-8">Aatma Gyan, Samakhushi Rd., Kathmandu</p>
+                    <p class="max-w-md text-xl mb-10">Nepal’s most trusted premium aquarium store. Healthy Flowerhorn, Arowana, Cichlids, Bettas &amp; lush planted tanks.</p>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <button onclick="navigateTo('shop')" class="bg-white text-[#0f766e] hover:bg-[#00d4ff] hover:text-white px-10 h-14 rounded-3xl font-semibold text-xl flex items-center gap-x-3">
+                            SHOP NOW <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                        <a href="https://wa.me/9779808695590?text=Hi%20Pan%E2%80%99s%20Pets!%20I%27d%20like%20to%20know%20what%27s%20in%20stock%20today." target="_blank" class="border border-white/60 hover:border-white px-8 h-14 rounded-3xl text-white font-semibold text-xl flex items-center">
+                            <i class="fa-brands fa-whatsapp text-3xl mr-3"></i> WHATSAPP US
+                        </a>
+                    </div>
 
-    <!-- PRODUCTS SECTION -->
-    <section id="shop" class="max-w-7xl mx-auto px-6 py-16">
-        <h2 class="heading-font text-5xl text-center mb-12">Our Premium Collection</h2>
-        
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8" id="products-grid">
-            <!-- Filled by JavaScript -->
-        </div>
-    </section>
-
-    <!-- ABOUT -->
-    <section id="about" class="bg-white py-16">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div>
-                    <h2 class="heading-font text-5xl mb-6">Nepal’s Premium Aquarium Store</h2>
-                    <p class="text-lg text-gray-600 mb-6">
-                        Owned by Ashish Singh Dangol, Pan’s Pets Paradise brings the finest exotic freshwater fish to Kathmandu.
-                    </p>
-                    <p class="text-gray-600">Located at <strong>Aatma Gyan, Samakhusi Rd</strong></p>
+                    <div class="flex items-center gap-x-8 mt-12">
+                        <div class="flex items-center"><i class="fa-solid fa-star text-[#22c55e] text-3xl mr-3"></i><div><span class="font-bold">4.9/5</span><br><span class="text-sm opacity-75">Google Rating</span></div></div>
+                        <div class="flex items-center"><i class="fa-solid fa-truck text-[#22c55e] text-3xl mr-3"></i><div><span class="font-bold">Same-day delivery</span><br><span class="text-sm opacity-75">Kathmandu Valley</span></div></div>
+                        <div class="flex items-center"><i class="fa-solid fa-shield text-[#22c55e] text-3xl mr-3"></i><div><span class="font-bold">7-day health guarantee</span></div></div>
+                    </div>
                 </div>
-                <div class="text-center text-6xl">🐠 🐟 🐡</div>
+
+                <div class="md:col-span-5">
+                    <img src="super-red-dragon-flowerhorn.jpg" alt="Super Red Dragon Flowerhorn at Pan’s Pets Paradise" class="w-full rounded-3xl shadow-2xl border-8 border-white/30">
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- CONTACT -->
-    <section id="contact" class="bg-teal-900 text-white py-16">
-        <div class="max-w-7xl mx-auto px-6 text-center">
-            <h2 class="heading-font text-5xl mb-8">Visit Our Store</h2>
-            <p class="text-2xl mb-4">Aatma Gyan, Samakhusi Rd, Kathmandu</p>
-            <div class="flex flex-wrap justify-center gap-6 mt-8">
-                <a href="tel:+9779848091477" class="flex items-center gap-3 bg-white/10 px-8 py-4 rounded-3xl">
-                    <i class="fa-solid fa-phone"></i> +977 984-809-1477
-                </a>
-                <a href="https://wa.me/9779848091477" target="_blank" class="flex items-center gap-3 bg-green-500 px-8 py-4 rounded-3xl">
-                    <i class="fa-brands fa-whatsapp text-2xl"></i> Chat on WhatsApp
-                </a>
+    <!-- NEW ARRIVALS -->
+    <div class="max-w-7xl mx-auto px-6 py-12">
+        <div class="flex justify-between items-end mb-8">
+            <h2 class="heading-font text-4xl">New Arrivals • Fresh from Asia</h2>
+            <a onclick="navigateTo('shop')" class="text-[#00d4ff] flex items-center text-sm font-medium">View all <i class="fa-solid fa-arrow-right ml-2"></i></a>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6" id="new-arrivals"></div>
+    </div>
+
+    <!-- BEST SELLERS -->
+    <div class="bg-[#f8fafc] py-12">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="heading-font text-4xl mb-8">Best Sellers in Nepal</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="bestsellers"></div>
+        </div>
+    </div>
+
+    <!-- SHOP SECTION -->
+    <section id="shop" class="max-w-7xl mx-auto px-6 py-16 bg-white">
+        <div class="flex flex-col md:flex-row justify-between mb-10">
+            <h2 class="heading-font text-5xl">Shop All Exotic Fish</h2>
+            
+            <div class="flex flex-wrap gap-2 mt-6 md:mt-0" id="category-filters">
+                <button onclick="filterProducts('all')" class="active px-6 py-2 rounded-3xl border border-[#0f766e] text-[#0f766e] font-medium">All</button>
+                <button onclick="filterProducts('Flowerhorn Collection')" class="px-6 py-2 rounded-3xl border">Flowerhorn</button>
+                <button onclick="filterProducts('Asian Arowana')" class="px-6 py-2 rounded-3xl border">Arowana</button>
+                <button onclick="filterProducts('Cichlids')" class="px-6 py-2 rounded-3xl border">Cichlids</button>
+                <button onclick="filterProducts('Bettas & Community Fish')" class="px-6 py-2 rounded-3xl border">Bettas</button>
+                <button onclick="filterProducts('Planted Tanks & Paludariums')" class="px-6 py-2 rounded-3xl border">Planted Tanks</button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8" id="products-grid"></div>
+    </section>
+
+    <!-- PRODUCT MODAL -->
+    <div onclick="if(event.target.id==='modal-backdrop')hideModal()" id="modal-backdrop" class="hidden fixed inset-0 bg-black/70 z-[9999] flex items-center justify-center p-4">
+        <div onclick="event.stopImmediatePropagation()" class="bg-white max-w-5xl w-full rounded-3xl overflow-hidden">
+            <div class="grid md:grid-cols-2">
+                <div id="modal-image-container" class="aspect-square bg-gray-100"></div>
+                <div class="p-8">
+                    <button onclick="hideModal()" class="float-right text-4xl text-gray-400">×</button>
+                    <span id="modal-category" class="uppercase text-[#00d4ff] text-sm font-medium"></span>
+                    <h1 id="modal-name" class="heading-font text-4xl mt-2"></h1>
+                    <div id="modal-price" class="text-5xl font-bold text-[#0f766e] mt-4"></div>
+                    
+                    <div id="modal-desc" class="mt-8 text-gray-600 leading-relaxed"></div>
+                    
+                    <div class="mt-10 flex gap-4">
+                        <button onclick="addCurrentToCart()" class="flex-1 bg-[#0f766e] text-white h-14 rounded-3xl text-lg font-semibold">Add to Cart</button>
+                        <button onclick="buyNow()" class="flex-1 border-2 border-[#0f766e] text-[#0f766e] h-14 rounded-3xl text-lg font-semibold">Buy Now via WhatsApp</button>
+                    </div>
+                    <p class="text-xs text-center mt-6 text-gray-500">7-day health guarantee • NPR pricing • Nepal delivery</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABOUT / STORE TOUR -->
+    <section id="about" class="max-w-7xl mx-auto px-6 py-16">
+        <div class="grid md:grid-cols-12 gap-12 items-center">
+            <div class="md:col-span-5">
+                <h2 class="heading-font text-5xl mb-6">Nepal’s Premium Aquarium Paradise</h2>
+                <p class="text-lg text-gray-600 mb-6">Owned by Ashish Singh Dangol, Pan’s Pets Paradise has been bringing the healthiest exotic freshwater fish to Kathmandu since 2020.</p>
+                <p class="text-gray-600">From stunning Flowerhorns and majestic Arowanas to rare Cichlids and ready-to-go planted tanks — every fish is carefully quarantined and cared for with passion.</p>
+                
+                <div class="mt-12">
+                    <a href="https://www.facebook.com/PANSPETS/" target="_blank" class="inline-flex items-center text-[#0f766e]"><i class="fa-brands fa-facebook text-4xl mr-4"></i> Follow on Facebook</a><br>
+                    <a href="https://www.instagram.com/panspetsparadise/" target="_blank" class="inline-flex items-center text-[#0f766e] mt-4"><i class="fa-brands fa-instagram text-4xl mr-4"></i> Follow on Instagram</a>
+                </div>
+            </div>
+            <div class="md:col-span-7">
+                <div class="aspect-video bg-black rounded-3xl overflow-hidden">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/Fnjng0oE1WU" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <p class="text-center text-xs text-gray-400 mt-4">Real store tour at Aatma Gyan, Samakhushi Rd.</p>
             </div>
         </div>
     </section>
 
-    <!-- FLOATING WHATSAPP -->
-    <a href="https://wa.me/9779848091477" target="_blank"
-       class="fixed bottom-6 right-6 bg-green-500 text-white w-16 h-16 rounded-full flex items-center justify-center text-3xl shadow-2xl hover:scale-110 z-50">
-        <i class="fa-brands fa-whatsapp"></i>
-    </a>
+    <!-- CONTACT & LOCATION -->
+    <section id="contact" class="bg-[#0f766e] text-white py-16">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-12 gap-12">
+                <div class="md:col-span-5">
+                    <h2 class="heading-font text-5xl mb-4">Visit Pan’s Pets Paradise</h2>
+                    <p class="text-2xl text-[#00d4ff]">Aatma Gyan, Samakhushi Rd., Kathmandu, Nepal</p>
+                    
+                    <div class="mt-10 space-y-6">
+                        <a href="tel:+9779808695590" class="flex items-center gap-x-4 text-xl"><i class="fa-solid fa-phone"></i> +977 980-869-5590 (Ashish)</a>
+                        <a href="https://wa.me/9779808695590" target="_blank" class="flex items-center gap-x-4 text-xl bg-[#22c55e] text-white px-8 h-14 rounded-3xl w-fit"><i class="fa-brands fa-whatsapp text-3xl"></i> Message on WhatsApp</a>
+                    </div>
+                </div>
+                
+                <div class="md:col-span-7">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.6828468330004!2d85.3153339!3d27.7303311!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb190f5e2f1b0b%3A0x5d3c8c2f4f3b9c8e!2sPan&#39;s%20Pets%20Paradise!5e0!3m2!1sen!2snp!4v1710000000000" width="100%" height="420" style="border:0;border-radius:24px;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#022c28] text-white/80 py-12">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-12 gap-y-10">
+                <div class="md:col-span-4">
+                    <div class="flex items-center gap-x-3 mb-4">
+                        <span class="text-4xl">🐟</span>
+                        <h1 class="heading-font text-3xl">Pan’s Pets Paradise</h1>
+                    </div>
+                    <p class="text-sm">Proudly serving Nepal’s aquarium hobbyists since 2020</p>
+                    <div class="flex gap-x-6 mt-8">
+                        <a href="https://www.facebook.com/PANSPETS/" target="_blank"><i class="fa-brands fa-facebook text-4xl hover:text-[#00d4ff]"></i></a>
+                        <a href="https://www.instagram.com/panspetsparadise/" target="_blank"><i class="fa-brands fa-instagram text-4xl hover:text-[#00d4ff]"></i></a>
+                    </div>
+                </div>
+                
+                <div class="md:col-span-2">
+                    <h5 class="font-semibold mb-4 text-white">Shop</h5>
+                    <ul class="text-sm space-y-2">
+                        <li><a onclick="navigateTo('shop')">Flowerhorn Collection</a></li>
+                        <li><a onclick="navigateTo('shop')">Asian Arowana</a></li>
+                        <li><a onclick="navigateTo('shop')">Cichlids</a></li>
+                        <li><a onclick="navigateTo('shop')">Planted Tanks</a></li>
+                    </ul>
+                </div>
+                
+                <div class="md:col-span-2">
+                    <h5 class="font-semibold mb-4 text-white">Company</h5>
+                    <ul class="text-sm space-y-2">
+                        <li>Ashish Singh Dangol, Owner</li>
+                        <li>Aatma Gyan, Samakhushi Rd., Kathmandu</li>
+                        <li>+977 980-869-5590</li>
+                    </ul>
+                </div>
+                
+                <div class="md:col-span-4 text-sm">
+                    <p class="mb-4">Ready to build your dream aquarium?</p>
+                    <a href="https://wa.me/9779808695590" target="_blank" class="block w-fit bg-white text-[#0f766e] px-8 py-4 rounded-3xl font-medium">Start a WhatsApp chat with Ashish →</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <!-- CART DRAWER -->
-    <div id="cart-drawer" class="hidden fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-[100] overflow-auto">
-        <div class="p-6 border-b flex justify-between items-center sticky top-0 bg-white">
+    <div onclick="if(event.target.id==='cart-overlay')toggleCart()" id="cart-overlay" class="hidden fixed inset-0 bg-black/60 z-[99999]"></div>
+    <div id="cart-drawer" class="hidden fixed top-0 bottom-0 right-0 w-full max-w-md bg-white shadow-2xl z-[100000] flex flex-col cart-drawer">
+        <div class="px-6 py-6 border-b flex items-center justify-between">
             <h3 class="text-2xl font-semibold">Your Cart</h3>
             <button onclick="toggleCart()" class="text-4xl">×</button>
         </div>
-        <div id="cart-items" class="p-6"></div>
-        <div class="p-6 border-t sticky bottom-0 bg-white">
+        <div id="cart-content" class="flex-1 p-6 overflow-auto"></div>
+        <div class="p-6 border-t">
             <div class="flex justify-between text-xl mb-6">
                 <span>Total</span>
                 <span id="cart-total" class="font-bold">NPR 0</span>
             </div>
-            <button onclick="checkout()" class="w-full bg-teal-700 text-white py-5 rounded-3xl text-lg font-semibold">
-                Checkout via WhatsApp
-            </button>
+            <button onclick="checkout()" class="w-full h-14 bg-[#0f766e] text-white rounded-3xl text-lg font-semibold">Checkout via WhatsApp</button>
         </div>
     </div>
 
     <script>
+        // ==================== PRODUCTS (easy to update) ====================
         let products = [
-            { id: 1, name: "Super Red Dragon Flowerhorn", category: "Flowerhorn", price: 5000 - 35000, img: "SRD Flowerhorn.jpg" },
-            { id: 2, name: "Platinum Asian Arowana", category: "Arowana", price: 5000 - 65000, img: "PA Arowana.jpg" },
-            { id: 3, name: "Blue Oscar Cichlid", category: "Cichlids", price: 1000 - 8500, img: "Blue Oscar Cichlid.jpg" },
-            { id: 4, name: "Crown Tail Betta", category: "Bettas", price: 500 - 2500, img: "Crown Tail Betta Pair.jpg" },
-            { id: 5, name: "Satanoperca Leucosticta", category: "Cichlids", price: 5000 - 18000, img: "Satanoperca Leucosticta.jpg" },
-            { id: 6, name: "30L Nano Tank Kit", category: "Planted Tank", price: 4500 - 12000, img: "30L Planted Nano Tank Kit.jpg" },
-            { id: 7, name: "Red Devil Cichlid", category: "Cichlids", price: 1000 - 6500, img: "Red Devil Cichlid.jpg" }
-        ];
+            {
+                id: 1,
+                name: "Super Red Dragon Flowerhorn",
+                category: "Flowerhorn Collection",
+                price: 2000 - 35000,
+                stock: true,
+                img: "super-red-dragon-flowerhorn.jpg",
+                desc: "Vibrant red dragon with prominent kok. 6–7 inches. Aggressive beauty and showstopper centerpiece."
+            },
+            {
+                id: 2,
+                name: "Platinum Asian Arowana",
+                category: "Asian Arowana",
+                price: 4000 - 65000,
+                stock: true,
+                img: "platinum-arowana.jpg",
+                desc: "Premium platinum variety. 8–10 inches. Exceptional scale shine and strong swimmer."
+            },
+            {
+                id: 3,
+                name: "Blue Oscar Cichlid",
+                category: "Cichlids",
+                price: 750 - 8500,
+                stock: true,
+                img: "blue-oscar.jpg",
+                desc: "Vibrant blue Oscar. 4–5 inches. Intelligent, hardy, and perfect for community or solo tanks."
+            },
+            {
+                id: 4,
+                name: "Crown Tail Betta Pair",
+                category: "Bettas & Community Fish",
+                price: 500 - 2500,
+                stock: true,
+                img: "crown-tail-betta.jpg",
+                desc: "Male + female crown tail pair. Stunning colors. Great for nano tanks or breeding projects."
+            },
+            {
+                id: 5,
+                name: "Satanoperca Leucosticta",
+                category: "Cichlids",
+                price: 10000 - 18000,
+                stock: true,
+                img: "satanoperca-leucosticta.jpg",
+                desc: "Rare Earth Eater Cichlid. Peaceful bottom dweller. Excellent for planted tanks."
+            },
+            {
+                id: 6,
+                name: "30L Planted Nano Tank Kit",
+                category: "Planted Tanks & Paludariums",
+                price: 5000 - 12000,
+                stock: true,
+                img: "30l-planted-nano-tank.jpg",
+                desc: "Complete ready-to-go planted nano aquarium. Includes live plants, light & filter."
+            },
+            {
+                id: 7,
+                name: "Red Devil Cichlid",
+                category: "Cichlids",
+                price: 1000 - 6500,
+                stock: true,
+                img: "red-devil-cichlid.jpg",
+                desc: "Bold orange-red coloration. 5 inches. Full of personality."
+            }
+        ]
 
-        let cart = [];
+        let cart = []
 
-        function renderProducts() {
-            const container = document.getElementById('products-grid');
-            container.innerHTML = '';
+        // Render products
+        function renderProducts(filtered) {
+            const grid = document.getElementById('products-grid')
+            grid.innerHTML = ''
             
-            products.forEach(p => {
+            filtered.forEach(product => {
                 const html = `
-                <div class="fish-card bg-white rounded-3xl overflow-hidden">
-                    <img src="${p.img}" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <p class="text-teal-600 text-sm">${p.category}</p>
-                        <h3 class="font-semibold text-xl mt-2">${p.name}</h3>
-                        <p class="text-3xl font-bold text-teal-800 mt-4">NPR ${p.price.toLocaleString()}</p>
-                        <button onclick="addToCart(${p.id}); event.stopImmediatePropagation()" 
-                                class="mt-6 w-full bg-teal-700 hover:bg-teal-800 text-white py-4 rounded-2xl">
-                            Add to Cart
-                        </button>
+                <div onclick="showProduct(${product.id})" class="fish-card bg-white rounded-3xl overflow-hidden cursor-pointer">
+                    <div class="relative">
+                        <img src="${product.img}" alt="${product.name}" class="w-full aspect-square object-cover">
+                        ${product.stock ? `<div class="absolute top-4 right-4 bg-[#22c55e] text-white text-xs font-bold px-4 h-7 rounded-3xl flex items-center">IN STOCK</div>` : ''}
                     </div>
-                </div>`;
-                container.innerHTML += html;
-            });
+                    <div class="p-5">
+                        <span class="text-xs uppercase text-[#00d4ff]">${product.category}</span>
+                        <h4 class="font-semibold text-lg mt-2 leading-tight">${product.name}</h4>
+                        <div class="flex justify-between items-end mt-5">
+                            <span class="text-3xl font-bold text-[#0f766e]">NPR ${product.price.toLocaleString('en-NP')}</span>
+                            <button onclick="event.stopImmediatePropagation();quickAdd(${product.id})" class="bg-[#0f766e] text-white w-10 h-10 rounded-2xl flex items-center justify-center text-xl">🛒</button>
+                        </div>
+                    </div>
+                </div>`
+                grid.innerHTML += html
+            })
         }
 
-        function addToCart(id) {
-            const product = products.find(p => p.id === id);
-            cart.push(product);
-            updateCartCount();
-            alert(`${product.name} added to cart!`);
+        function filterProducts(cat) {
+            // Reset active buttons
+            document.querySelectorAll('#category-filters button').forEach(b => b.classList.remove('active', 'bg-[#0f766e]', 'text-white'))
+            
+            if (cat === 'all') {
+                document.querySelector('#category-filters button').classList.add('active', 'bg-[#0f766e]', 'text-white')
+                renderProducts(products)
+            } else {
+                const btn = Array.from(document.querySelectorAll('#category-filters button')).find(b => b.textContent === cat)
+                if (btn) btn.classList.add('active', 'bg-[#0f766e]', 'text-white')
+                const filtered = products.filter(p => p.category === cat)
+                renderProducts(filtered)
+            }
         }
 
-        function updateCartCount() {
-            document.getElementById('cart-count').textContent = cart.length;
+        // Show product detail
+        let currentProduct = null
+        function showProduct(id) {
+            currentProduct = products.find(p => p.id === id)
+            if (!currentProduct) return
+
+            document.getElementById('modal-image-container').innerHTML = `<img src="${currentProduct.img}" alt="${currentProduct.name}" class="w-full h-full object-cover">`
+            document.getElementById('modal-category').textContent = currentProduct.category
+            document.getElementById('modal-name').textContent = currentProduct.name
+            document.getElementById('modal-price').innerHTML = `NPR <span class="text-5xl">${currentProduct.price.toLocaleString('en-NP')}</span>`
+            document.getElementById('modal-desc').innerHTML = `<p>${currentProduct.desc}</p><p class="mt-6 text-sm flex items-center"><i class="fa-solid fa-leaf text-[#22c55e] mr-2"></i>7-day health guarantee included</p>`
+
+            document.getElementById('modal-backdrop').classList.remove('hidden')
+            document.getElementById('modal-backdrop').classList.add('flex')
+        }
+
+        function hideModal() {
+            const modal = document.getElementById('modal-backdrop')
+            modal.classList.add('hidden')
+            modal.classList.remove('flex')
+            currentProduct = null
+        }
+
+        function quickAdd(id) {
+            const product = products.find(p => p.id === id)
+            if (!product) return
+            cart.push(product)
+            updateCart()
+            alert(`${product.name} added to cart!`)
+        }
+
+        function addCurrentToCart() {
+            if (currentProduct) {
+                cart.push(currentProduct)
+                updateCart()
+                hideModal()
+            }
+        }
+
+        function buyNow() {
+            if (!currentProduct) return
+            cart.push(currentProduct)
+            updateCart()
+            hideModal()
+            setTimeout(() => toggleCart(), 400)
+        }
+
+        // Cart functions
+        function updateCart() {
+            document.getElementById('cart-count-badge').textContent = cart.length
         }
 
         function toggleCart() {
-            const drawer = document.getElementById('cart-drawer');
-            drawer.classList.toggle('hidden');
-            renderCart();
+            const drawer = document.getElementById('cart-drawer')
+            const overlay = document.getElementById('cart-overlay')
+            
+            if (drawer.classList.contains('hidden')) {
+                renderCart()
+                drawer.style.display = 'flex'
+                overlay.style.display = 'block'
+            } else {
+                drawer.style.display = 'none'
+                overlay.style.display = 'none'
+            }
         }
 
         function renderCart() {
-            let html = '';
-            let total = 0;
-            
-            cart.forEach((item, index) => {
-                total += item.price;
-                html += `
-                <div class="flex gap-4 mb-6">
-                    <img src="${item.img}" class="w-20 h-20 object-cover rounded-2xl">
-                    <div class="flex-1">
-                        <h4 class="font-medium">${item.name}</h4>
-                        <p class="text-teal-700">NPR ${item.price}</p>
-                        <button onclick="removeFromCart(${index})" class="text-red-500 text-sm mt-2">Remove</button>
-                    </div>
-                </div>`;
-            });
-            
-            document.getElementById('cart-items').innerHTML = html || '<p class="text-center text-gray-400 py-12">Cart is empty</p>';
-            document.getElementById('cart-total').textContent = `NPR ${total.toLocaleString()}`;
+            const container = document.getElementById('cart-content')
+            let total = 0
+            let html = ''
+
+            if (cart.length === 0) {
+                html = `<div class="text-center py-16"><div class="text-7xl mb-4">🐟</div><p class="text-xl">Your cart is empty</p></div>`
+            } else {
+                cart.forEach((item, i) => {
+                    total += item.price
+                    html += `
+                    <div class="flex gap-4 mb-8">
+                        <img src="${item.img}" class="w-20 h-20 object-cover rounded-2xl">
+                        <div class="flex-1">
+                            <h4 class="font-semibold">${item.name}</h4>
+                            <p class="text-[#0f766e]">NPR ${item.price}</p>
+                            <button onclick="removeFromCart(${i});" class="text-red-500 text-sm mt-2">Remove</button>
+                        </div>
+                    </div>`
+                })
+            }
+            container.innerHTML = html
+            document.getElementById('cart-total').innerHTML = `NPR <span class="text-4xl">${total.toLocaleString('en-NP')}</span>`
         }
 
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            renderCart();
-            updateCartCount();
+        function removeFromCart(i) {
+            cart.splice(i, 1)
+            renderCart()
+            updateCart()
         }
 
         function checkout() {
-            if (cart.length === 0) return;
-            let message = "Hi Pan’s Pets Paradise!%0AI want to buy:%0A";
-            cart.forEach(item => {
-                message += `- ${item.name} (NPR ${item.price})%0A`;
-            });
-            window.open(`https://wa.me/9779848091477?text=${message}`, '_blank');
+            if (cart.length === 0) return
+            let text = "Hi Pan’s Pets Paradise!%0AI want to buy:%0A"
+            cart.forEach(item => text += `• ${item.name} — NPR ${item.price}%0A`)
+            text += `%0ATotal: NPR ${cart.reduce((a,b)=>a+b.price,0)}%0APlease confirm stock & delivery to Kathmandu.`
+            window.open(`https://wa.me/9779808695590?text=${text}`, '_blank')
+            cart = []
+            updateCart()
+            toggleCart()
         }
 
-        // Initialize
-        window.onload = () => {
-            renderProducts();
-        };
+        // New arrivals & bestsellers
+        function renderNewArrivals() {
+            const container = document.getElementById('new-arrivals')
+            const slice = products.slice(0, 6)
+            container.innerHTML = slice.map(p => `
+                <div onclick="showProduct(${p.id})" class="fish-card bg-white rounded-3xl overflow-hidden cursor-pointer">
+                    <img src="${p.img}" class="w-full aspect-square object-cover">
+                    <div class="p-4 text-center">
+                        <span class="text-xs text-[#ff6b6b]">NEW</span>
+                        <h5 class="font-medium mt-1">${p.name}</h5>
+                        <p class="text-[#0f766e] text-lg">NPR ${p.price}</p>
+                    </div>
+                </div>`).join('')
+        }
+
+        function renderBestSellers() {
+            const container = document.getElementById('bestsellers')
+            const slice = products.slice(0, 4)
+            container.innerHTML = slice.map(p => `
+                <div onclick="showProduct(${p.id})" class="fish-card bg-white rounded-3xl p-5 cursor-pointer">
+                    <img src="${p.img}" class="w-full aspect-square object-cover rounded-2xl mb-4">
+                    <span class="text-xs text-[#00d4ff]">${p.category}</span>
+                    <h4 class="font-semibold text-lg">${p.name}</h4>
+                    <div class="flex justify-between mt-4">
+                        <span class="text-3xl font-bold text-[#0f766e]">NPR ${p.price}</span>
+                        <i onclick="event.stopImmediatePropagation();quickAdd(${p.id});" class="fa-solid fa-cart-plus text-3xl text-[#0f766e]"></i>
+                    </div>
+                </div>`).join('')
+        }
+
+        function navigateTo(section) {
+            document.getElementById(section).scrollIntoView({ behavior: 'smooth' })
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu')
+            const icon = document.getElementById('mobile-icon')
+            menu.classList.toggle('hidden')
+            icon.classList.toggle('fa-bars')
+            icon.classList.toggle('fa-xmark')
+        }
+
+        // Initialize everything
+        window.onload = function() {
+            renderNewArrivals()
+            renderBestSellers()
+            renderProducts(products)
+            console.log('%c✅ Pan’s Pets Paradise full e-commerce website ready! 🚀\nLocation updated to Aatma Gyan, Samakhushi Rd.\nAll images & WhatsApp integration active.', 'color:#0f766e;font-weight:bold')
+        }
     </script>
 </body>
 </html>
